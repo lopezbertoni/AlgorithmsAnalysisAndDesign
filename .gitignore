@@ -43,5 +43,7 @@ Temporary Items
 bin
 obj
 .apdisk
-.suo
+*.suo
+*.user
+
 
