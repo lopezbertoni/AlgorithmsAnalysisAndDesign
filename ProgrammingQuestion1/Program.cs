@@ -8,40 +8,41 @@ namespace ProgrammingQuestion1
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             var testCase1 = new[] {1, 3, 5, 2, 4, 6};
-
-            MergeSort(testCase1, 0, 5);
+            MergeSortCount(testCase1, 0, 5);
 
             foreach (var x in testCase1)
             {
                 Console.WriteLine(x.ToString());
             }
+
+            var testCase2 = new[] {1, 6, 3, 2, 4, 5};
+            MergeSortCount(testCase2, 0, testCase2.Length - 1);
         }
 
-        private static void MergeSort(int[] a, int i, int j)
+        private static void MergeSortCount(int[] a, int i, int j)
         {
             var mid = 0;
-
             if (j > i)
             {
                 mid = (i + j)/2;
-                MergeSort(a, i, mid);
-                MergeSort(a, mid + 1, j);
-                Merge(a);
-                //MergeCountInversion(a, i, j, mid);
+                MergeSortCount(a, i, mid);
+                MergeSortCount(a, mid + 1, j);
+                MergeCount(a);
             }
         }
 
-        private static void Merge(int[] a)
+        private static void MergeCount(int[] a)
         {
             var n = a.Length;
             var output = new int[n];
             var left = 0;
             var right = a.Length/2;
             var mid = a.Length/2;
-
+            var count = 0;
+           
             for (var k = 0; k < n; k++)
             {
                 if (a[left] < a[right] && left < mid)
@@ -53,6 +54,13 @@ namespace ProgrammingQuestion1
                 {
                     output[k] = a[right];
                     right++;
+
+                    //Count inversions
+                    count += mid - left;
+                    if (count > 0)
+                    {
+                        Console.WriteLine("Current inversions are equal to {0}", count);
+                    }
                 }
             }
 
@@ -60,34 +68,6 @@ namespace ProgrammingQuestion1
             {
                 a[x] = output[x];
             }
-        }
-
-        private static Results MergeCountInversion(int[] a, int i, int j, int mid)
-        {
-            var inversions = 0;
-            var results = new Results {SortedList = new List<int>()};
-
-            for (var k = 0; k < j; k++)
-            {
-                if (a[i] < a[j])
-                {
-                    results.SortedList.Add(a[i]);
-                    i++;
-                }
-                else
-                {
-                    results.SortedList.Add(a[j]);
-                    j++;
-                }
-            }
-
-            return results;
-        }
-
-        private class Results
-        {
-            public List<int> SortedList { get; set; }
-            public int InversionCount { get; set; }
         }
     }
 }
