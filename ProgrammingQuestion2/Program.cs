@@ -41,13 +41,13 @@ namespace ProgrammingQuestion2
 
             //Median element as pivot
             //Test Case 1
-            //CalculateComparisons("10.txt", Pivots.Median);
+            CalculateComparisons("10.txt", Pivots.Median);
 
             //Test Case 2
-            //CalculateComparisons("100.txt", Pivots.Median);
+            CalculateComparisons("100.txt", Pivots.Median);
 
             //Test Case 3
-            //CalculateComparisons("1000.txt", Pivots.Median);
+            CalculateComparisons("1000.txt", Pivots.Median);
             
         }
 
@@ -94,27 +94,31 @@ namespace ProgrammingQuestion2
                 //Swap element
                 Swap(arr, left, right-1);
             }
-            //if (pivot == Pivots.Median)
-            //{
-            //    var size = right - left;
-            //    var mid = (right - left) / 2;
-            //    if (size > 1)
-            //    {
-            //        var candidates = new Dictionary<int, int>
-            //        {
-            //            {left, arr[left]},
-            //            {mid, arr[mid]},
-            //            {size, arr[size]}
-            //        };
+            if (pivot == Pivots.Median)
+            {
+                //Calculate array size
+                var size = right - left;
+                if (size > 2)
+                {
+                    //We have at least 3 elements in the array
+                    //Position in arr is relative to middle position. 
+                    var mid = left +  (right - left - 1) / 2;
+                    var candidates = new Dictionary<int, int>
+                    {
+                        {left, arr[left]},
+                        {mid, arr[mid]},
+                        {right - 1, arr[right - 1]}
+                    };
+                    var ind = candidates.OrderBy(x => x.Value).Select(x => x.Key).Skip(1).First();
+                    Swap(arr, left, ind);
+                }
+                else
+                {
+                    //We have less than 2 elements in the array
+                    Swap(arr, left, right-1);
+                }
+            }
 
-            //        var ind = candidates.OrderBy(x => x.Value).Select(x => x.Key).Skip(1).First();
-            //        Swap(arr, left, ind);
-            //    }
-            //    else
-            //    {
-            //        Swap(arr, left, right);
-            //    }
-            //}
             var p = arr[left]; 
 
             var i = left + 1;
