@@ -10,6 +10,10 @@ namespace ProgrammingQuestion2
     {
         static void Main(string[] args)
         {
+            int[] input = { 23, 31, 1, 21, 36, 72 };
+            Console.WriteLine(String.Join(", ", input));
+            var partitionTest = Partition(input, 0, input.Length);
+            Console.WriteLine(String.Join(", ", input));
         }
 
         private static void QuickSort(int[] arr, int left, int right)
@@ -39,18 +43,13 @@ namespace ProgrammingQuestion2
                 if (arr[j] < p)
                 {
                     //Swap
-                    var temp = arr[i];
-                    arr[i] = arr[j];
-                    arr[j] = temp;
+                    Swap(arr, i, j);
                     i++;
-                }
-                else
-                {
-                    return right;
                 }
                 j++;
             }
-            //Swap(arr, 0, i - 1);
+            Swap(arr, left, i-1);
+            return i;
         }
 
         private static void Swap(int[] arr, int i, int j)
