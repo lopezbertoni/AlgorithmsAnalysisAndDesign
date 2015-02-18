@@ -48,6 +48,16 @@ namespace ProgrammingQuestion2
 
             //Test Case 3
             CalculateComparisons("1000.txt", Pivots.Median);
+
+            //Real HW Data
+            //Test Case 1
+            CalculateComparisons("QuickSort.txt", Pivots.First);
+
+            //Test Case 2
+            CalculateComparisons("QuickSort.txt", Pivots.Last);
+
+            //Test Case 3
+            CalculateComparisons("QuickSort.txt", Pivots.Median);
             
         }
 
