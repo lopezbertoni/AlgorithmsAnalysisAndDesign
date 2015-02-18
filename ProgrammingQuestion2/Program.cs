@@ -23,21 +23,31 @@ namespace ProgrammingQuestion2
             //Test Case 1
             //CalculateComparisons("10.txt", Pivots.First);
 
-            //Test Case 2
+            ////Test Case 2
             //CalculateComparisons("100.txt", Pivots.First);
 
-            //Test Case 3
+            ////Test Case 3
             //CalculateComparisons("1000.txt", Pivots.First);
 
-            //Last element as pivot
+            ////Last element as pivot
+            ////Test Case 1
+            //CalculateComparisons("10.txt", Pivots.Last);
+
+            ////Test Case 2
+            //CalculateComparisons("100.txt", Pivots.Last);
+
+            ////Test Case 3
+            //CalculateComparisons("1000.txt", Pivots.Last);
+
+            //Median element as pivot
             //Test Case 1
-            CalculateComparisons("10.txt", Pivots.Last);
+            CalculateComparisons("10.txt", Pivots.Median);
 
             //Test Case 2
-            CalculateComparisons("100.txt", Pivots.Last);
+            //CalculateComparisons("100.txt", Pivots.Median);
 
             //Test Case 3
-            CalculateComparisons("1000.txt", Pivots.Last);
+            //CalculateComparisons("1000.txt", Pivots.Median);
             
         }
 
@@ -51,7 +61,7 @@ namespace ProgrammingQuestion2
 
             //Console.WriteLine(String.Join(", ", intData));
             QuickSort(intData, 0, intData.Length, p);
-            Console.WriteLine(String.Join(", ", intData));
+            //Console.WriteLine(String.Join(", ", intData));
             Console.WriteLine("There are {0} comparisons", Count);
         }
 
@@ -85,6 +95,20 @@ namespace ProgrammingQuestion2
                 //Swap element
                 Swap(arr, left, right-1);
             }
+            if (pivot == Pivots.Median)
+            {
+                var size = arr.Length;
+                var mid = (arr.Length/2) - 1;
+                var candidates = new Dictionary<int, int>
+                {
+                    {left, arr[left]},
+                    {mid, arr[mid]},
+                    {size - 1, arr[size - 1]}
+                };
+
+                var ind = candidates.OrderBy(x => x.Value).Select(x => x.Key).Skip(1).First();
+                Swap(arr, left, ind);
+            }
             var p = arr[left]; 
 
             var i = left + 1;
@@ -101,10 +125,10 @@ namespace ProgrammingQuestion2
                 j++;
                 Count++;
             }
-            //Console.WriteLine(String.Join(", ", arr));
+            Console.WriteLine(String.Join(", ", arr));
             Swap(arr, left, i-1);
-            //Console.WriteLine("Pivot = {0}", p);
-            //Console.WriteLine(String.Join(", ", arr));
+            Console.WriteLine("Pivot = {0}", p);
+            Console.WriteLine(String.Join(", ", arr));
             return i;
         }
 
