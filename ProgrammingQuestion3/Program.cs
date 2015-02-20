@@ -49,6 +49,19 @@ namespace ProgrammingQuestion3
             var newlist = vList.Where(i => i != vValue && i != eValue).ToList();
             newlist.AddRange(eList.Where(i => i != vValue && i != eValue));
 
+            var distinctVertices = newlist.Distinct().ToList();
+            foreach (var vertex in distinctVertices)
+            {
+                //Get all values
+                var edgesInVertex = input.First(x => x.Key == vertex).Value;
+                for (var i = 0; i < edgesInVertex.Count; i++)
+                {
+                    if (edgesInVertex[i] == vValue || edgesInVertex[i] == eValue)
+                    {
+                        SwapValue(input, vertex, i, newNode);
+                    }
+                }
+            }
             //Update Vertices/Edges individually. 
             //foreach (var x in newlist)
             //{
@@ -70,6 +83,14 @@ namespace ProgrammingQuestion3
             input.Add(newNode, newlist);
 
             Console.WriteLine("New node {0} contains {1}",newNode, String.Join(", ", newlist));
+        }
+
+        private static void SwapValue(Dictionary<int, List<int>> input, int key, int valIndex, int newValue)
+        {
+            var list = new List<int>();
+            list = input.First(x => x.Key == key).Value;
+            list[valIndex] = newValue;
+            input[key] = list;
         }
 
         private static int PickRandomIndex(int number)
