@@ -12,23 +12,53 @@ namespace ProgrammingQuestion3
         static void Main(string[] args)
         {
             var testCase1 = ReadData("TestCase1.txt");
-            var vertices = testCase1.Count;
-            var rnd = PickRandomIndex(vertices);
-            Console.WriteLine(rnd);
-
-            var edges = testCase1.Values.ElementAt(2); //Number of edges
-            var edgeCount = edges.Count;
-            Console.WriteLine(edgeCount);
-
-            var randomEdgeIndex = PickRandomIndex(edgeCount);
-
-            var edge = edges.ElementAt(2);
-
-            if (edgeCount > 1)
-            {
-                MergeNodes(2, 3, testCase1);
-            }
             PrintGraph(testCase1);
+
+            CountMinimumCuts(testCase1);
+            //var vertices = testCase1.Count;
+            //var randomVertexIndex = PickRandomIndex(vertices);
+            //Console.WriteLine("Random Index at: {0}", randomVertexIndex);
+
+            //var edges = testCase1.Values.ElementAt(randomVertexIndex); //Number of edges
+            //var edgeCount = edges.Count;
+            //Console.WriteLine(edgeCount);
+
+            //var randomEdgeIndex = PickRandomIndex(edgeCount);
+
+            //var edge = edges.ElementAt(randomEdgeIndex);
+
+            //if (edgeCount > 1)
+            //{
+            //    MergeNodes(randomVertexIndex, randomEdgeIndex, testCase1);
+            //}
+            //PrintGraph(testCase1);
+        }
+
+        private static void CountMinimumCuts(Dictionary<int, List<int>> input)
+        {
+            //Get initial vertices count
+            var vCount = input.Count;
+
+            //Do this until we are left with 2 vertices
+            while (vCount > 2)
+            {
+                //Get random vertex, gets random value between 0 and vCount
+                var randomVertexIndex = PickRandomIndex(vCount);
+                //Print the edges for that vertex
+                var edges = input.Values.ElementAt(randomVertexIndex);
+                Console.WriteLine("Random Vertex Index at: {0} with value {1}, and edges {2}", randomVertexIndex, input.Keys.ElementAt(randomVertexIndex), String.Join(", ", edges));
+                //Pick a random edge
+                var randomEdgeIndex = PickRandomIndex(edges.Count);
+                Console.WriteLine("Random edge picked from: {0} at index {1} with value {2}", String.Join(", ", edges), randomEdgeIndex, input.Values.ElementAt(randomVertexIndex)[randomEdgeIndex]);
+
+                //If we have more than 1 edge, we need to merge them
+                if (edges.Count > 1)
+                {
+                    MergeNodes(randomVertexIndex, randomEdgeIndex, input);
+                }
+                PrintGraph(input);
+                vCount = input.Count;
+            }
         }
 
         private static void MergeNodes(int vindex, int eindex, Dictionary<int, List<int>> input)
@@ -37,7 +67,7 @@ namespace ProgrammingQuestion3
             var eValue = input.ElementAt(eindex).Key;
             var newNode = Convert.ToInt32(String.Format("{0}{1}", vValue, eValue));
 
-            Console.WriteLine("Grabbing vertex at index {0} with value {1}. Edge at index {2} and value {3}.", vindex, vValue, eindex, eValue);
+            Console.WriteLine("Grabbing vertex at index {0} with value {1}. Edge at index {2} with value {3}.", vindex, vValue, eindex, eValue);
 
             var vList = input.Values.ElementAt(vindex);
             var eList = input.Values.ElementAt(eindex);
@@ -82,7 +112,7 @@ namespace ProgrammingQuestion3
             input.Remove(eValue);
             input.Add(newNode, newlist);
 
-            Console.WriteLine("New node {0} contains {1}",newNode, String.Join(", ", newlist));
+            Console.WriteLine("New node {0} contains {1}", newNode, String.Join(", ", newlist));
         }
 
         private static void SwapValue(Dictionary<int, List<int>> input, int key, int valIndex, int newValue)
