@@ -64,13 +64,15 @@ namespace ProgrammingQuestion3
         private static void MergeNodes(int vindex, int eindex, Dictionary<int, List<int>> input)
         {
             var vValue = input.ElementAt(vindex).Key;
-            var eValue = input.ElementAt(eindex).Key;
+            var eValue = input.ElementAt(vindex).Value[eindex];
+            //eindex = input.Where(x => x.Key == eValue).Select(x => x.Key).First();
             var newNode = Convert.ToInt32(String.Format("{0}{1}", vValue, eValue));
 
             Console.WriteLine("Grabbing vertex at index {0} with value {1}. Edge at index {2} with value {3}.", vindex, vValue, eindex, eValue);
 
             var vList = input.Values.ElementAt(vindex);
-            var eList = input.Values.ElementAt(eindex);
+            //var eList = input.Values.ElementAt(eindex);
+            var eList = input.Where(x => x.Key == eValue).Select(x => x.Value).First();
 
             Console.WriteLine("Vertex index {0} contains edges {1}.", vindex, String.Join(", ", vList));
             Console.WriteLine("Vertex index {0} contains edges {1}.", eindex, String.Join(", ", eList));
@@ -83,7 +85,7 @@ namespace ProgrammingQuestion3
             foreach (var vertex in distinctVertices)
             {
                 //Get all values
-                var edgesInVertex = input.First(x => x.Key == vertex).Value;
+                var edgesInVertex = input.FirstOrDefault(x => x.Key == vertex).Value;
                 for (var i = 0; i < edgesInVertex.Count; i++)
                 {
                     if (edgesInVertex[i] == vValue || edgesInVertex[i] == eValue)
