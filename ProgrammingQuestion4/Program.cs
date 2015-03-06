@@ -13,7 +13,7 @@ namespace ProgrammingQuestion4
         {
             var test = new Stack<Int32>();
             var t1 = ReadData("TestCase1.txt");
-            var t2 = ReadData("TestCase1.txt");
+            var t2 = ReadData("TestCase2.txt");
             var t = ReadData("SCC.txt"); 
         }
 
@@ -23,29 +23,29 @@ namespace ProgrammingQuestion4
             var inputData = new List<Node>();
 
             var v = 0;
-            var e = new List<int>();
+            var i = 0;
+            
             foreach (var s in txtData)
             {
                 var x = s.Split(' ');
                 
-                if (Convert.ToInt32(x[0]) != v)
+                //Check if new node
+                var currentNode = Convert.ToInt32(x[0]);
+                var edge = Convert.ToInt32(x[1]);
+                if (currentNode == v)
                 {
-                    for (var i = 0; i < x.Length; i++)
-                    {
-                        if (i == 0)
-                        {
-                            v = Convert.ToInt32(x[i]);
-                        }
-                        else
-                        {
-                            if (!String.IsNullOrEmpty(x[i]))
-                            {
-                                e.Add(Convert.ToInt32(x[i]));
-                            }
-                        }
-                    }
+                    //Add to current node
+                    var index = inputData.Count;
+                    inputData[index - 1].Edges.Add(edge);
                 }
-                inputData.Add(new Node {V = v, Edges = e, Visited = false});
+                else
+                {
+                    //New node so add vertex and edges
+                    var e = new List<int>();
+                    e.Add(edge);
+                    inputData.Add(new Node { V = currentNode, Edges = e, Visited = false });
+                }
+                v = currentNode;
             }
             return inputData;
         }
