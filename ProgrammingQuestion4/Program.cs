@@ -11,10 +11,41 @@ namespace ProgrammingQuestion4
     {
         static void Main(string[] args)
         {
-            var test = new Stack<Int32>();
             var t1 = ReadData("TestCase1.txt");
             var t2 = ReadData("TestCase2.txt");
-            var t = ReadData("SCC.txt"); 
+            DfsLoop(t2);
+            //var t = ReadData("SCC.txt"); 
+        }
+
+        private static void DfsLoop(List<Node> graph)
+        {
+            var n = graph.Count;
+            var index = n - 1;
+
+            for (var j = 0; j < n; j++)
+            {
+                Console.WriteLine("Checking index {0} with value {1}", index, graph[index].V);
+                if (!graph[index].Visited)
+                {
+                    Dfs(graph, index);
+                }
+                index--;
+            }
+        }
+
+        private static void Dfs(List<Node> graph, int nodeIndex)
+        {
+            //Mark nodes as visited
+            graph[nodeIndex].Visited = true;
+
+            foreach (var edge in graph[nodeIndex].Edges)
+            {
+                if (!graph[edge - 1].Visited)
+                {
+                    Console.WriteLine("Traversing node {0}", edge);
+                    Dfs(graph, edge - 1);
+                }
+            }
         }
 
         private static List<Node> ReadData(string filename)
@@ -23,7 +54,6 @@ namespace ProgrammingQuestion4
             var inputData = new List<Node>();
 
             var v = 0;
-            var i = 0;
             
             foreach (var s in txtData)
             {
@@ -49,6 +79,5 @@ namespace ProgrammingQuestion4
             }
             return inputData;
         }
-
     }
 }
