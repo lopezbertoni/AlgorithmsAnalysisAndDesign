@@ -13,6 +13,7 @@ namespace ProgrammingQuestion4
         {
             var t1 = ReadData("TestCase1.txt");
             var t2 = ReadData("TestCase2.txt");
+            DfsLoop(t1);
             DfsLoop(t2);
             //var t = ReadData("SCC.txt"); 
         }
@@ -40,10 +41,15 @@ namespace ProgrammingQuestion4
 
             foreach (var edge in graph[nodeIndex].Edges)
             {
-                if (!graph[edge - 1].Visited)
+                var node = edge;
+                var eindex = graph.FirstOrDefault(x => x.V == node);
+                if (eindex != null)
                 {
-                    Console.WriteLine("Traversing node {0}", edge);
-                    Dfs(graph, edge - 1);
+                    if (!graph[eindex.Index].Visited)
+                    {
+                        Console.WriteLine("Traversing node {0}", edge);
+                        Dfs(graph, edge - 1);
+                    }
                 }
             }
         }
@@ -73,7 +79,7 @@ namespace ProgrammingQuestion4
                     //New node so add vertex and edges
                     var e = new List<int>();
                     e.Add(edge);
-                    inputData.Add(new Node { V = currentNode, Edges = e, Visited = false });
+                    inputData.Add(new Node { V = currentNode, Edges = e, Visited = false, Index = inputData.Count });
                 }
                 v = currentNode;
             }
