@@ -12,20 +12,44 @@ namespace ProgrammingQuestion4
     {
         static void Main(string[] args)
         {
-            var testCase1 = ReadData("TestCase1.txt");
-            DfsLoop(testCase1);
+            //var testCase1 = ReadData("TestCase1.txt");
+            //DfsLoop(testCase1);
             var testCase2 = ReadData("TestCase2.txt");
             DfsLoop(testCase2);
-            var testCase3 = ReadData("TestCase3.txt");
-            DfsLoop(testCase3);
-            var testCase4 = ReadData("TestCase4.txt");
-            DfsLoop(testCase4);
-            var testCase5 = ReadData("TestCase5.txt");
-            DfsLoop(testCase5);
-            var testCase6 = ReadData("TestCase6.txt");
-            DfsLoop(testCase6);
+            //var testCase3 = ReadData("TestCase3.txt");
+            //DfsLoop(testCase3);
+            //var testCase4 = ReadData("TestCase4.txt");
+            //DfsLoop(testCase4);
+            //var testCase5 = ReadData("TestCase5.txt");
+            //DfsLoop(testCase5);
+            //var testCase6 = ReadData("TestCase6.txt");
+            //DfsLoop(testCase6);
             //var t = ReadData("SCC.txt");
             //DfsLoop(t);
+            //var testCase1 = ReadDataStack("TestCase1.txt");
+            //DfsLoop(testCase1);
+            //var testCase2 = ReadDataStack("TestCase2.txt");
+            //ComputeScc(testCase2);
+            //var testCase3 = ReadDataStack("TestCase3.txt");
+            //DfsStack(testCase3);
+            //var testCase4 = ReadDataStack("TestCase4.txt");
+            //DfsStack(testCase4);
+            //var testCase5 = ReadDataStack("TestCase5.txt");
+            //DfsStack(testCase5);
+            //var testCase6 = ReadDataStack("TestCase6.txt");
+            //DfsLoop(testCase6);
+            //var t = ReadDataStack("SCC.txt");
+            //DfsLoop(t);
+        }
+
+        private static List<String> ComputeScc(List<Node> graph)
+        {
+            var results = new List<String>();
+
+            //Compute DFS on reverse graph.
+            var grev = graph.Select(n => new Node { V = n.E, E = n.V }).ToList();
+            DfsLoop(graph);
+            return results;
         }
 
         private static void DfsLoop(List<Node> graph)
@@ -35,9 +59,9 @@ namespace ProgrammingQuestion4
 
             for (var j = 0; j < n; j++)
             {
-                Console.WriteLine("Checking index {0} with value {1}", index, graph[index].V);
                 if (!graph[index].Visited)
                 {
+                    Console.WriteLine("Checking index {0} with value {1}", index, graph[index].V);
                     DfsRecursive(graph, index);
                 }
                 index--;
@@ -46,35 +70,50 @@ namespace ProgrammingQuestion4
 
         private static void DfsStack(List<Node> graph, int nodeIndex)
         {
-            var s = new Stack<Node>();
-            s.Push(graph[nodeIndex]);
+            var s = new Stack<int>();
+            s.Push(graph[nodeIndex].V);
+            
+            var f = 0;
             while (s.Count > 0)
             {
                 var v = s.Pop();
-                if (!v.Visited)
+                var vertex = graph.FirstOrDefault(x => x.V == v);
+                if (vertex != null)
                 {
-                    //Mark all V's as visited
-                    var nodes = graph.Where(x => x.V == v.V);
-                    foreach (var node in nodes)
+                    if (!vertex.Visited)
                     {
-                        node.Visited = true;
+                        Console.WriteLine("Processing V = {0}", v);
+                        //Mark all V's as visited
+                        var nodes = graph.Where(x => x.V == vertex.V);
+                        //Console.WriteLine("Traversing node {0}", vertex.V);
+                        foreach (var node in nodes)
+                        {
+                            node.Visited = true;
+                            s.Push(node.E);
+                        }
                     }
-                    //graph[nodeIndex].Visited = true;
-
-                    //Add the edges to the stack
-                    //foreach (var  in graph)
-                    //{
-                        
-                    //}
+                    else
+                    {
+                        //Node is finished
+                        Console.WriteLine("{0} is done", v);
+                    }
                 }
+                else
+                {
+                    //Node is finished
+                    Console.WriteLine("{0} is done", v);
+                }
+                f++;
             }
+            Console.WriteLine("Finishing Time = {0}", f);
         }
 
+        private static int t = 0;
         private static void DfsRecursive(List<Node> graph, int nodeIndex)
         {
             //Mark nodes as visited
             graph[nodeIndex].Visited = true;
-
+            
             foreach (var edge in graph[nodeIndex].Edges)
             {
                 var node = edge;
@@ -83,11 +122,14 @@ namespace ProgrammingQuestion4
                 {
                     if (!graph[eindex.Index].Visited)
                     {
-                        Console.WriteLine("Traversing node {0}", edge);
+                        //Console.WriteLine("Traversing node {0}", edge);
                         DfsRecursive(graph, eindex.Index);
                     }
                 }
             }
+            t++;
+            Console.WriteLine("Finishing Time of v {1}= {0}", t, graph[nodeIndex].V);
+
         }
 
         private static List<Node> ReadData(string filename)
