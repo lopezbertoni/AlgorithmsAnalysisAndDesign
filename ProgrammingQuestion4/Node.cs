@@ -9,6 +9,7 @@ namespace ProgrammingQuestion4
     public class Node
     {
         public int V { get; set; }
+        public int E { get; set; }
         public List<int> Edges { get; set; }
         public bool Visited { get; set; }
         public int Index { get; set; }
