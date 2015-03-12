@@ -14,12 +14,15 @@ namespace ProgrammingQuestion4
         {
             //var testCase1 = ReadData("TestCase1.txt");
             //DfsLoop(testCase1);
+            t = 0;
             var testCase2 = ReadData("TestCase2.txt");
             DfsLoop(testCase2);
+            //t = 0;
             //var testCase3 = ReadData("TestCase3.txt");
             //DfsLoop(testCase3);
-            //var testCase4 = ReadData("TestCase4.txt");
-            //DfsLoop(testCase4);
+            t = 0;
+            var testCase4 = ReadData("TestCase4.txt");
+            DfsLoop(testCase4);
             //var testCase5 = ReadData("TestCase5.txt");
             //DfsLoop(testCase5);
             //var testCase6 = ReadData("TestCase6.txt");
@@ -129,7 +132,6 @@ namespace ProgrammingQuestion4
             }
             t++;
             Console.WriteLine("Finishing Time of v {1}= {0}", t, graph[nodeIndex].V);
-
         }
 
         private static List<Node> ReadData(string filename)
