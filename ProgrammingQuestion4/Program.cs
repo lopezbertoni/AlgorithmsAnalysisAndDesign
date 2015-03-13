@@ -29,7 +29,7 @@ namespace ProgrammingQuestion4
         private static readonly Stack<int> NodesFinishingTimes = new Stack<int>(); 
         private static readonly Dictionary<int, int> Results = new Dictionary<int, int>();
         private static int SccCount = 1;
-        private static readonly List<int> Visited = new List<int>();
+        private static readonly HashSet<int> Visited = new HashSet<int>();
 
         private static void ComputeScc(string filename)
         {
