@@ -38,7 +38,7 @@ namespace ProgrammingQuestion4
             Visited.Clear();
             Results.Clear();
             var graph = ReadDataStack(filename);
-            var grev = graph.Select(x => new Node {V = x.E, E = x.V}).ToList();
+            var grev = new HashSet<Node>(graph.Select(x => new Node { V = x.E, E = x.V }).ToList());
 
             //Compute DFS on reverse graph.
             DfsLoop(grev);
@@ -51,17 +51,17 @@ namespace ProgrammingQuestion4
             Console.WriteLine("Results for {0} are {1}", filename, String.Join(",", Results.Values.OrderByDescending(x => x).Take(5)));
         }
 
-        private static void DfsLoop(List<Node> graph)
+        private static void DfsLoop(HashSet<Node> graph)
         {
             var n = graph.Count;
             var index = n - 1;
 
-            for (var j = 0; j < n; j++)
+            foreach (var node in graph)
             {
-                if (!Visited.Contains(graph[index].V))
+                if (!Visited.Contains(node.V))
                 {
-                    //Console.WriteLine("Checking index {0} with value {1}", index, graph[index].V);
-                    DfsRecursive(graph, graph[index].V);
+                    Console.WriteLine("Checking index {0} with value {1}", index, node.V);
+                    DfsRecursive(graph, node.V);
                 }
                 index--;
             }
@@ -71,7 +71,7 @@ namespace ProgrammingQuestion4
             //}
         }
 
-        private static void DfsRecursive(List<Node> graph, int v)
+        private static void DfsRecursive(HashSet<Node> graph, int v)
         {
             //Mark nodes as visited
             Visited.Add(v);
@@ -90,7 +90,7 @@ namespace ProgrammingQuestion4
             //Console.WriteLine("Finishing Time of node V {0} = {1}", v, t);
         }
         
-        private static void DfsLoopStack(List<Node> graph)
+        private static void DfsLoopStack(HashSet<Node> graph)
         {
             while (NodesFinishingTimes.Count > 0)
             {
@@ -105,10 +105,11 @@ namespace ProgrammingQuestion4
             }
         }
 
-        private static List<Node> ReadDataStack(string filename)
+        private static HashSet<Node> ReadDataStack(string filename)
         {
             var txtData = File.ReadLines(filename).ToArray();
-            return txtData.Select(s => s.Split(' ')).Select(x => new Node{V = Convert.ToInt32(x[0]), E = Convert.ToInt32(x[1])}).ToList();
+            var list = txtData.Select(s => s.Split(' ')).Select(x => new Node{V = Convert.ToInt32(x[0]), E = Convert.ToInt32(x[1])}).ToList();
+            return new HashSet<Node>(list);
         }
     }
 }
