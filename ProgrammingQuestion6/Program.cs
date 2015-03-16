@@ -52,7 +52,7 @@ namespace ProgrammingQuestion6
             var medians64 = new List<Int64>();
             var sums64 = new List<Int64>();
             var sum = 0;
-            var sum64 = 0f;
+            var sum64 = 0.0;
             var i = 0;
             foreach (var s in txtData)
             {
