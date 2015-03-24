@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,7 +16,54 @@ namespace ProgrammingQuestion5
 
         static void Main(string[] args)
         {
-            var d = ReadData("dijkstraData.txt");
+            //var d = ReadData("dijkstraData.txt");
+
+            var testCase1 = ReadData("TestCase1.txt");
+            GetDijkstraMinPath(testCase1);
+        }
+
+        private static void GetDijkstraMinPath(Dictionary<int, Tuple<int, int>[]> graph)
+        {
+            //Initialize variables. 
+            var v = Distances.First().Key; //Get initial node
+            Distances[v] = 0; //Set initial distance to zero, all other are int.MaxValue
+            VisitOrder.Push(v);
+            
+            //Start doing work
+            while (VisitOrder.Count > 0)
+            {
+                //Get node
+                var vertex = VisitOrder.Pop();
+                Visited.Add(vertex);
+                var currentNodeEdges = graph[vertex];
+                var currentDistance = Distances[vertex];
+
+                var edgeDistances = new SortedList<int, int>();
+
+                //Loop through node edges
+                foreach (var currentNodeEdge in currentNodeEdges)
+                {
+                    //Check if node has been visited
+                    if (!Visited.Contains(currentNodeEdge.Item1))
+                    {
+                        //Node has not been visited. 
+                        //Update distance if less than previously computed distance
+                        var newDistance = currentDistance + currentNodeEdge.Item2;
+                        if (newDistance < Distances[currentNodeEdge.Item1])
+                        {
+                            Distances[currentNodeEdge.Item1] = newDistance;
+                        }
+                        if (!edgeDistances.ContainsKey(newDistance))
+                        {
+                            edgeDistances.Add(newDistance, currentNodeEdge.Item1);
+                        }
+                    }
+                }
+                if (edgeDistances.Any())
+                {
+                    VisitOrder.Push(edgeDistances.First().Value);
+                }
+            }
         }
 
         private static Dictionary<int, Tuple<int,int>[]> ReadData(string filename)
@@ -33,6 +81,7 @@ namespace ProgrammingQuestion5
                     t.Add(new Tuple<int, int>(Convert.ToInt32(x[i]), Convert.ToInt32(x[i+1])));
                 }
                 inputData.Add(n, t.ToArray());
+                Distances.Add(n, int.MaxValue);
             }
 
             return inputData;
