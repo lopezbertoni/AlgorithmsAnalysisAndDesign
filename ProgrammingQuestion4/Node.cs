@@ -8,7 +8,6 @@ namespace ProgrammingQuestion4
 {
     public class NodeExpanded : Node
     {
-
         public List<int> Edges { get; set; }
         public bool Visited { get; set; }
         public int Index { get; set; }
