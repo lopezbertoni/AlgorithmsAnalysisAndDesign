@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProgrammingQuestion5
 {
+    //Tutorial:https://www.youtube.com/watch?v=gdmfOwyQlcI
     class Program
     {
         private static readonly HashSet<int> Visited = new HashSet<int>();
@@ -16,10 +17,18 @@ namespace ProgrammingQuestion5
 
         static void Main(string[] args)
         {
-            //var d = ReadData("dijkstraData.txt");
-
             var testCase1 = ReadData("TestCase1.txt");
             GetDijkstraMinPath(testCase1);
+            Distances.Clear();
+            var testCase2 = ReadData("TestCase2.txt");
+            GetDijkstraMinPath(testCase2);
+            Distances.Clear();
+            var testCase3 = ReadData("TestCase3.txt");
+            GetDijkstraMinPath(testCase3);
+            Distances.Clear();
+            var realData = ReadData("dijkstraData.txt");
+            GetDijkstraMinPath(realData);
+            PrintResults(new[]{7,37,59,82,99,115,133,165,188,198});
         }
 
         private static void GetDijkstraMinPath(Dictionary<int, Tuple<int, int>[]> graph)
@@ -38,8 +47,6 @@ namespace ProgrammingQuestion5
                 var currentNodeEdges = graph[vertex];
                 var currentDistance = Distances[vertex];
 
-                var edgeDistances = new SortedList<int, int>();
-
                 //Loop through node edges
                 foreach (var currentNodeEdge in currentNodeEdges)
                 {
@@ -53,17 +60,30 @@ namespace ProgrammingQuestion5
                         {
                             Distances[currentNodeEdge.Item1] = newDistance;
                         }
-                        if (!edgeDistances.ContainsKey(newDistance))
-                        {
-                            edgeDistances.Add(newDistance, currentNodeEdge.Item1);
-                        }
                     }
                 }
-                if (edgeDistances.Any())
+                var next = GetMinDistanceKey();
+                if (next > 0)
                 {
-                    VisitOrder.Push(edgeDistances.First().Value);
+                    VisitOrder.Push(next);
                 }
             }
+        }
+
+        //Use heap instead of this
+        private static int GetMinDistanceKey()
+        {
+            var min = 0;
+            var sorted = Distances.OrderBy(x => x.Value);
+            foreach (var keyValuePair in sorted)
+            {
+                if (!Visited.Contains(keyValuePair.Key))
+                {
+                    min = keyValuePair.Key;
+                    break;
+                }
+            }
+            return min;
         }
 
         private static Dictionary<int, Tuple<int,int>[]> ReadData(string filename)
@@ -85,6 +105,14 @@ namespace ProgrammingQuestion5
             }
 
             return inputData;
+        }
+
+        private static void PrintResults(int[] keys)
+        {
+            foreach (var key in keys)
+            {
+                Console.WriteLine("Key {0}, Value {1}", key, Distances[key]);
+            }
         }
     }
 }
